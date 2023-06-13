@@ -55,7 +55,7 @@ export const Register = () => {
 <div className='h-[100vh] bg-indigo-600 flex flex-col items-center justify-center'>
 <div className='h-fit bg-white md:w-[20%] w-[90%] mx-auto  px-3 py-2 rounded-md'>
     <div className='flex justify-center items-center gap-x-3'>
-        <img src="/logo1.jpg" alt="logo" className='w-[3rem] h-[3rem] rounded-full'/>
+        <img src="/logo2.jpg" alt="logo" className='w-[3rem] h-[3rem] rounded-full'/>
         <p className='text-3xl'>JustChat</p>
     </div>
     <div className='mt-5'>
