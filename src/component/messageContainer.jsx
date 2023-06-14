@@ -12,7 +12,7 @@ import { NoMessage } from './noMessage';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react'
-let socket = io.connect(import.meta.env.VITE_APP_BACKEND_URL)
+let socket = io.connect(import.meta.env.VITE_APP_BACKEND_URL,{ transports: ["polling", "websocket"], 'path': '/api/new/socket' })
 
 console.log(import.meta.env.VITE_APP_BACKEND_URL,"env url");
 
