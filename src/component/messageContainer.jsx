@@ -167,7 +167,7 @@ export const MessageContainer = ({ selectedUser, setOnline,setSelectedUser, curr
             </div>
             {messages.length>0 ? messages?.map((message,ind) =><Message  key={message._id+(new Date())} own={message?.sender === currentuser._id} message={message} />)
                 : <NoMessage/> }
-                    <div className={`${toggleEmoji ? "visible" : "hidden"} absolute bottom-0 right-0`}>
+                    <div className={`${toggleEmoji ? "visible" : "hidden"} w-[100%] absolute bottom-0 right-0`}>
                     <Picker data={data} onEmojiSelect={(data)=>sendMessage.current.value=sendMessage.current.value+data.native}/>
                     </div>
             </div>

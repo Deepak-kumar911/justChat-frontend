@@ -40,6 +40,7 @@ export const Conversation = () => {
     async function fetch() {
       try {
         const { data } = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/api/user`);
+        // console.log(data,"data");
         const decode = jwtDecode(localStorage.getItem("token"))
         const filterData = data.filter(user => user._id !== decode._id)
         SetallUser(filterData)
