@@ -7,6 +7,7 @@ import { Contacts } from '../component/contacts';
 import { TiDeleteOutline } from 'react-icons/ti'
 // import { NoMessage } from '../component/noMessage';
 import { MessageContainer } from '../component/messageContainer';
+import {ThreeCircles} from 'react-loader-spinner'
 
 
 export const Conversation = () => {
@@ -23,6 +24,7 @@ export const Conversation = () => {
   const [viewprofile, setViewProfile] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
   const [editUserProfile,setEditUserProfile] = useState({usename:"",desc:""})
+  const [loading,setLoading] = useState(true);
 
 
 
@@ -45,6 +47,7 @@ export const Conversation = () => {
         const filterData = data.filter(user => user._id !== decode._id)
         SetallUser(filterData)
         setCurrentUser(decode)
+        setLoading(false)
       } catch (err) {
         console.log(err);
       }
@@ -109,8 +112,22 @@ export const Conversation = () => {
   const userData = search.length > 1 ? allUser.filter(user => user.username.includes(search)) : allUser;
 
   return (
-    <div className='flex flex-col gap-y-4 h-[100vh] bg-orange-200 p-2'>
-      <div className='grid grid-cols-1 md:grid-cols-12 md:gap-x-4'>
+    <>    
+      {loading ? <div className='h-[100vh] flex flex-col justify-center items-center'>
+        <ThreeCircles
+      height="100"
+      width="100"
+      color="#7700cf"
+      wrapperStyle={{}}
+      wrapperClass=""
+      visible={true}
+      ariaLabel="three-circles-rotating"
+      outerCircleColor=""
+      innerCircleColor=""
+      middleCircleColor=""
+    />
+      </div>: <div className='flex flex-col gap-y-4 h-[100vh] bg-orange-200 p-2'>
+       <div className='grid grid-cols-1 md:grid-cols-12 md:gap-x-4'>
         <div className={`md:col-span-3 bg-white rounded-md flex flex-col gap-y-2 ${View ? "hidden md:visible md:col-span-3 bg-white rounded-md md:flex flex-col gap-y-2" : "visible h-[98vh]  md:h-[100%]"}`}>
 
           <div className=' px-4 py-3'>
@@ -139,7 +156,7 @@ export const Conversation = () => {
                 {/* view profile */}
                 <div className={`${viewprofile ? "visible" : "hidden"} absolute flex flex-col justify-center items-center z-10 top-0 bg-indigo-600 px-3 py-5  w-[80%] text-white right-0 text-center rounded-b-lg rounded-l-lg `}>
                   <div className='flex justify-between items-center w-[100%] mb-4'><h3 className='text-xl'>My Profile</h3><TiDeleteOutline className='text-2xl cursor-pointer' onClick={() => setViewProfile(false)} /> </div>
-                  <img src={currentuser.profilePicture ? `${import.meta.env.VITE_APP_BACKEND_URL}/${currentuser?.profilePicture}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
+                  <img src={currentuser?.profilePicture?.name ? `${currentuser?.profilePicture.imgSrc}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
                   <h4 className='text-2xl text-white capitalize'> {currentuser.username}</h4>
                   <h6 className='text-sm text-green-300'>{currentuser.email}</h6>
                   <p className='text-md text-white '>About: {currentuser.desc}</p>
@@ -148,7 +165,7 @@ export const Conversation = () => {
             {/* edit profile */}
                 <div className={`${editProfile ? "visible" : "hidden"} absolute flex flex-col justify-center items-center z-10 top-0 bg-indigo-600 px-3 py-5  w-[80%] text-white right-0 text-center rounded-b-lg rounded-l-lg `}>
                   <div className='flex justify-between items-center w-[100%] mb-4'><h3 className='text-xl'>Edit my Profile</h3><TiDeleteOutline className='text-2xl cursor-pointer' onClick={() => setEditProfile(false)} /> </div>
-                  <img src={currentuser.profilePicture ? `${import.meta.env.VITE_APP_BACKEND_URL}/${currentuser?.profilePicture}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
+                  <img src={currentuser?.profilePicture?.name ? `${currentuser?.profilePicture.imgSrc}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
                   <div className='flex flex-col gap-y-2 mt-4 text-indigo-500 w-[100%]'>
                   <input type="text" name="username" value={editUserProfile.usename} onChange={handleEditChange} className='h-8 border w-[100%] border-indigo-500 px-2 outline-none rounded-md'  placeholder='UserName' />
                   <input type="text" name="desc" value={editUserProfile.desc} onChange={handleEditChange} className='h-8 border border-indigo-500 w-[100%] px-2 outline-none rounded-md'  placeholder='About' />
@@ -162,7 +179,7 @@ export const Conversation = () => {
           <div>
             <div className={"h-[80vh] overflow-auto overflow-y-auto "}>
               {userData.length > 0 ? userData.map(user => <Contacts key={user._id} detail={user} online={online?.filter(userme => userme.userId === user._id).length > 0 ? "online" : "offline"} handleChat={handleChat} />)
-                : <p>No User Right Now!</p>} </div>
+                : <p className='text-center'>No User Right Now!</p>} </div>
           </div>
         </div>
 
@@ -171,7 +188,8 @@ export const Conversation = () => {
           <MessageContainer setOnline={setOnline} online={online} setView={setView} profile={profile} setProfile={setProfile} setSelectedUser={setSelectedUser} setHistory={setHistory} selectedUser={selectedUser} currentuser={currentuser} />
         </div>
       </div>
-
     </div>
+}
+    </>
   )
 }
