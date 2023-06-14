@@ -12,7 +12,9 @@ import { NoMessage } from './noMessage';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react'
-let socket = io.connect(import.meta.env.VITE_APP_BACKEND_URL)
+let socket = io.connect(import.meta.env.VITE_APP_BACKEND_URL,{transports: ['websocket', 'polling', 'flashsocket']})
+
+console.log(import.meta.env.VITE_APP_BACKEND_URL,"env url");
 
 export const MessageContainer = ({ selectedUser, setOnline,setSelectedUser, currentuser,setView,online,profile,setProfile }) => {
     const [conversation, setConversation] = useState(null)
