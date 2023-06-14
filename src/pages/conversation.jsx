@@ -104,7 +104,7 @@ export const Conversation = () => {
     }
   }
  
-  console.log(currentuser,"current user");
+  // console.log(currentuser,"current user");
 
   const userData = search.length > 1 ? allUser.filter(user => user.username.includes(search)) : allUser;
 
