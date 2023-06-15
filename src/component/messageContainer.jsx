@@ -47,6 +47,8 @@ export const MessageContainer = ({ selectedUser, setOnline, setSelectedUser, cur
     }
   }, [arrivedMessage, selectedUser])
 
+  useEffect(()=>{},[toggleEmoji])
+
 
 
 
@@ -134,6 +136,7 @@ export const MessageContainer = ({ selectedUser, setOnline, setSelectedUser, cur
     setView(false)
   }
 
+  console.log(toggleEmoji,"toggleEmoji");
 
 
   return (
@@ -178,8 +181,8 @@ export const MessageContainer = ({ selectedUser, setOnline, setSelectedUser, cur
 
         {/* message area */}
 
-        <div>
-          <div className='h-[76vh] z-5 md:h-[79vh] relative overflow-auto'>
+        <div className=''>
+          <div className='h-[76vh] z-5 md:h-[79vh] relative overflow-auto z-20'>
             <div className={`${profile ? "z-10 bg-black sticky top-5 px-4 py-2 w-[80%] md:w-[25%] mx-auto mt-5 flex flex-col items-center  rounded-md" : "hidden"} `}>
               <img src={selectedUser?.profilePicture?.name ? `${selectedUser?.profilePicture.imgSrc}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] md:w-[5rem] border-2 p-1 border-white h-[3.5rem] md:h-[5rem] rounded-full ' />
               <h4 className='text-2xl text-indigo-500 capitalize'> {selectedUser.username}</h4>
@@ -189,7 +192,7 @@ export const MessageContainer = ({ selectedUser, setOnline, setSelectedUser, cur
             </div>
             {messages.length > 0 ? messages?.map((message, ind) => <Message key={message._id + (new Date())} own={message?.sender === currentuser._id} message={message} />)
               : <NoMessage />}
-            <div className={`${toggleEmoji ? "visible" : "hidden"} w-[100%] absolute bottom-0 right-0`}>
+            <div className={`${toggleEmoji ? "visible w-fit z-30 absolute bottom-0 right-0" : "hidden"} `}>
               <Picker data={data} onEmojiSelect={(data) => sendMessage.current.value = sendMessage.current.value + data.native} />
             </div>
           </div>
@@ -202,7 +205,7 @@ export const MessageContainer = ({ selectedUser, setOnline, setSelectedUser, cur
                 <input type="text" ref={sendMessage} placeholder=' Your message' className='w-[80%] border-none outline-none' />
               </div>
               <div className='flex gap-x-3 items-center'>
-                <div><AiOutlineSmile className='text-2xl text-indigo-800' onClick={() => setToggleEmoji(!toggleEmoji)} /></div>
+                <div onClick={() => setToggleEmoji(!toggleEmoji)}><AiOutlineSmile className='text-2xl text-indigo-800'  /></div>
                 <div className='flex border border-orange-200 cursor-pointer bg-orange-200 items-center gap-x-1 py-1 px-3 rounded-md' onClick={handleSend}>
                   <p>Send</p>
                   <IoPaperPlane />

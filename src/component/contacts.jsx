@@ -6,7 +6,7 @@ export const Contacts = ({detail,handleChat,online}) => {
             <div className='grid grid-cols-12 px-3 py-1'>
                 <div className='col-span-2'>
                     <div className='relative'>
-                        <img className='w-[2.5rem] h-[2.5rem] rounded-md' src={`${(detail?.profilePicture.name) ? `${detail?.profilePicture?.imgSrc}` : "/logo1.jpg" } `} alt="pic" />
+                        <img className='w-[2.5rem] h-[2.5rem] rounded-md' src={`${(detail?.profilePicture?.name) ? `${detail?.profilePicture?.imgSrc}` : "/logo1.jpg" } `} alt="pic" />
                     </div>
                 </div>
                 <div className='col-span-10'>

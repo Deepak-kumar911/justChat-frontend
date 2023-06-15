@@ -8,6 +8,7 @@ import { TiDeleteOutline } from 'react-icons/ti'
 // import { NoMessage } from '../component/noMessage';
 import { MessageContainer } from '../component/messageContainer';
 import {ThreeCircles} from 'react-loader-spinner'
+import avatar from '../service/avatar';
 
 
 export const Conversation = () => {
@@ -23,7 +24,7 @@ export const Conversation = () => {
   const [userprofile, setUserProfile] = useState(false);
   const [viewprofile, setViewProfile] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
-  const [editUserProfile,setEditUserProfile] = useState({usename:"",desc:""})
+  const [editUserProfile,setEditUserProfile] = useState({desc:"",avatar:""})
   const [loading,setLoading] = useState(true);
 
 
@@ -55,8 +56,14 @@ export const Conversation = () => {
   }, []);
 
  useEffect(()=>{
-  setEditUserProfile({usename:currentuser.username,desc:currentuser.desc})
+  setEditUserProfile({avatar:currentuser.profilePicture,desc:currentuser.desc})
  },[currentuser])
+
+//  console.log(editUserProfile,"edituser profile");
+//  console.log(currentuser,"current user");
+
+
+
 
   const handleChat = (detail) => {
     setSelectedUser(detail)
@@ -96,9 +103,11 @@ export const Conversation = () => {
   const updateProfile = async (e)=>{
     e.preventDefault();
     // console.log(editUserProfile);
+    const editData = {desc:editUserProfile.desc,profilePicture:editUserProfile.avatar}
     try {
-      const {data} = await axios.put(`${import.meta.env.VITE_APP_BACKEND_URL}/api/user/update/${currentuser._id}`,editUserProfile);
+      const {data} = await axios.put(`${import.meta.env.VITE_APP_BACKEND_URL}/api/user/update/${currentuser._id}`,editData);
         //  console.log(res);
+      console.log(data,"updated data");
       setCurrentUser(data)
       setEditProfile(false);
       setViewProfile(true);
@@ -165,9 +174,12 @@ export const Conversation = () => {
             {/* edit profile */}
                 <div className={`${editProfile ? "visible" : "hidden"} absolute flex flex-col justify-center items-center z-10 top-0 bg-indigo-600 px-3 py-5  w-[80%] text-white right-0 text-center rounded-b-lg rounded-l-lg `}>
                   <div className='flex justify-between items-center w-[100%] mb-4'><h3 className='text-xl'>Edit my Profile</h3><TiDeleteOutline className='text-2xl cursor-pointer' onClick={() => setEditProfile(false)} /> </div>
-                  <img src={currentuser?.profilePicture?.name ? `${currentuser?.profilePicture.imgSrc}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
+                  <img src={editUserProfile?.avatar?.name ? `${editUserProfile?.avatar.imgSrc}` : "/logo1.jpg"} alt="pic" className='w-[3.5rem] border-2 p-1 border-white md:w-[5rem] h-[3.5rem] md:h-[5rem]  rounded-full ' />
                   <div className='flex flex-col gap-y-2 mt-4 text-indigo-500 w-[100%]'>
-                  <input type="text" name="username" value={editUserProfile.usename} onChange={handleEditChange} className='h-8 border w-[100%] border-indigo-500 px-2 outline-none rounded-md'  placeholder='UserName' />
+                  <div className='flex gap-x-3 w-[100%] overflow-auto h-full px-3'>
+                {avatar?.map(avatar=><img onClick={()=>setEditUserProfile({...editUserProfile,avatar:avatar})} key={avatar.id} src={avatar.imgSrc} alt={avatar.name}  className={`w-[3rem] h-[3rem] rounded-full ${editUserProfile?.avatar?.name===avatar.name ? "border-2 border-white" : "border border-indigo-700" } `}/>)}    
+          </div>
+                  {/* <input type="text" name="username" value={editUserProfile.usename} onChange={handleEditChange} className='h-8 border w-[100%] border-indigo-500 px-2 outline-none rounded-md'  placeholder='UserName' /> */}
                   <input type="text" name="desc" value={editUserProfile.desc} onChange={handleEditChange} className='h-8 border border-indigo-500 w-[100%] px-2 outline-none rounded-md'  placeholder='About' />
                   <button className='bg-green-600 h-8 rounded-md  text-white' onClick={updateProfile}>Update</button>     
                   </div>
